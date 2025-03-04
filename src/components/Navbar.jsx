@@ -1,14 +1,19 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
+import ProductContext from "../context/ProductContext"
+import { Link } from "react-router-dom"
 
 
-const Navbar = ({setProduct}) => {
+
+const Navbar = () => {
+
+ const { setProducts, cart} = useContext(ProductContext)
 
   const[searchValue, setSearchValue] = useState('')
 
   const searchProduct = async () => {
     const res = await fetch(`https://dummyjson.com/products/search?q=${searchValue}`)
     const data = await res.json()
-    setProduct(data.products)
+    setProducts(data.products)
     console.log(data.products)
   }
 
@@ -22,8 +27,9 @@ const Navbar = ({setProduct}) => {
         <button onClick={searchProduct} className="bg-slate-500 outline-none border-2 hover:border-purple-500 ml-2 py-1 px-2 rounded-md">Search</button>
        </div>
        <ul className="font-bold text-xl flex items-center gap-7 justify-between">
-        <li>Home</li>
-        <li>Cart</li>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/cart">Cart {!cart.length ? '' : `(${cart.length})`}</Link></li>
+         
        </ul>
       </div>
 
